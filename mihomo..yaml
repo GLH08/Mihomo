@@ -1,14 +1,4 @@
 proxy-groups:
-  - name: 节点选择
-    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png
-    type: select
-    proxies:
-      - DIRECT
-      - HK
-      - JP
-      - US
-      - Global
-
   - name: HK
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Hong_Kong.png
     type: select
@@ -30,18 +20,9 @@ proxy-groups:
   - name: Global
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png
     type: select
-    include-all: true
-
-  - name: 漏网之鱼
-    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Final.png
-    type: select
     proxies:
-      - 节点选择
       - DIRECT
-      - HK
-      - JP
-      - US
-      - Global
+    include-all: true
 
 rule-providers:
   AI:
@@ -109,7 +90,7 @@ rule-providers:
     type: http
 
 rules:
-  # 局域网及基础直连规则（建议保留以防止本地流量被代理）
+  # 局域网及基础直连规则
   - "DOMAIN-SUFFIX,local,DIRECT"
   - "IP-CIDR,192.168.0.0/16,DIRECT,no-resolve"
   - "IP-CIDR,10.0.0.0/8,DIRECT,no-resolve"
@@ -121,17 +102,17 @@ rules:
   - "IP-CIDR6,fe80::/10,DIRECT,no-resolve"
   - "IP-CIDR6,fd00::/8,DIRECT,no-resolve"
   
-  # 自定义规则集
-  - "RULE-SET,AI,节点选择"
-  - "RULE-SET,Apple,节点选择"
-  - "RULE-SET,Microsoft,节点选择"
-  - "RULE-SET,Telegram,节点选择"
-  - "RULE-SET,Twitter,节点选择"
-  - "RULE-SET,Discord,节点选择"
-  - "RULE-SET,Google,节点选择"
-  - "RULE-SET,Github,节点选择"
-  - "RULE-SET,YouTube,节点选择"
+  # 业务分流规则
+  - "RULE-SET,AI,US"
+  - "RULE-SET,Apple,Global"
+  - "RULE-SET,Microsoft,Global"
+  - "RULE-SET,Telegram,Global"
+  - "RULE-SET,Twitter,Global"
+  - "RULE-SET,Discord,Global"
+  - "RULE-SET,Google,Global"
+  - "RULE-SET,Github,Global"
+  - "RULE-SET,YouTube,Global"
   
-  # 国内直连与兜底
+  # 国内直连与全局兜底（替代漏网之鱼）
   - "GEOIP,CN,DIRECT"
-  - "MATCH,漏网之鱼"
+  - "MATCH,Global"
