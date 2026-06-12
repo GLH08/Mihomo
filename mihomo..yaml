@@ -1,28 +1,110 @@
 proxy-groups:
+  # =================基础节点组=================
+  # 这四个组会显示在客户端的最上面，用于筛选具体的机场节点
   - name: HK
-    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Hong_Kong.png
     type: select
     include-all: true
     filter: (?i)港|HK|hk|Hong Kong|HongKong|hongkong
 
   - name: JP
-    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Japan.png
     type: select
     include-all: true
     filter: (?i)日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan
 
   - name: US
-    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/United_States.png
     type: select
     include-all: true
     filter: (?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States
 
   - name: Global
-    icon: https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Global.png
     type: select
     proxies:
       - DIRECT
     include-all: true
+
+  # =================业务策略组=================
+  # 这些组会显示在地区组的下方，你可以为每个应用单独选择路线
+  - name: AI
+    type: select
+    proxies:
+      - DIRECT
+      - HK
+      - JP
+      - US
+      - Global
+
+  - name: Apple
+    type: select
+    proxies:
+      - DIRECT
+      - HK
+      - JP
+      - US
+      - Global
+
+  - name: Microsoft
+    type: select
+    proxies:
+      - DIRECT
+      - HK
+      - JP
+      - US
+      - Global
+
+  - name: Telegram
+    type: select
+    proxies:
+      - DIRECT
+      - HK
+      - JP
+      - US
+      - Global
+
+  - name: Twitter
+    type: select
+    proxies:
+      - DIRECT
+      - HK
+      - JP
+      - US
+      - Global
+
+  - name: Discord
+    type: select
+    proxies:
+      - DIRECT
+      - HK
+      - JP
+      - US
+      - Global
+
+  - name: Google
+    type: select
+    proxies:
+      - DIRECT
+      - HK
+      - JP
+      - US
+      - Global
+
+  - name: Github
+    type: select
+    proxies:
+      - DIRECT
+      - HK
+      - JP
+      - US
+      - Global
+
+  - name: YouTube
+    type: select
+    proxies:
+      - DIRECT
+      - HK
+      - JP
+      - US
+      - Global
+
 
 rule-providers:
   AI:
@@ -89,6 +171,7 @@ rule-providers:
     format: text
     type: http
 
+
 rules:
   # 局域网及基础直连规则
   - "DOMAIN-SUFFIX,local,DIRECT"
@@ -102,16 +185,16 @@ rules:
   - "IP-CIDR6,fe80::/10,DIRECT,no-resolve"
   - "IP-CIDR6,fd00::/8,DIRECT,no-resolve"
   
-  # 业务分流规则
-  - "RULE-SET,AI,US"
-  - "RULE-SET,Apple,Global"
-  - "RULE-SET,Microsoft,Global"
-  - "RULE-SET,Telegram,Global"
-  - "RULE-SET,Twitter,Global"
-  - "RULE-SET,Discord,Global"
-  - "RULE-SET,Google,Global"
-  - "RULE-SET,Github,Global"
-  - "RULE-SET,YouTube,Global"
+  # 具体业务规则指向对应的策略组
+  - "RULE-SET,AI,AI"
+  - "RULE-SET,Apple,Apple"
+  - "RULE-SET,Microsoft,Microsoft"
+  - "RULE-SET,Telegram,Telegram"
+  - "RULE-SET,Twitter,Twitter"
+  - "RULE-SET,Discord,Discord"
+  - "RULE-SET,Google,Google"
+  - "RULE-SET,Github,Github"
+  - "RULE-SET,YouTube,YouTube"
   
   # 国内直连与全局兜底
   - "GEOIP,CN,DIRECT"
