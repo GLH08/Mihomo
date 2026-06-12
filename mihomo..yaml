@@ -103,6 +103,16 @@ proxy-groups:
       - US
       - Global
 
+  # =================兜底策略组=================
+  - name: 兜底分流
+    type: select
+    proxies:
+      - DIRECT
+      - HK
+      - JP
+      - US
+      - Global
+
 
 rule-providers:
   AI:
@@ -196,4 +206,4 @@ rules:
   
   # 国内直连与全局兜底
   - "GEOIP,CN,DIRECT"
-  - "MATCH,Global"
+  - "MATCH,兜底分流"
